@@ -1,0 +1,103 @@
+<h3>Embedded Usertask Example</h3>
+<form role="form" name="formVariables">
+	<div class="row">
+		<div class="col-xs-6">
+			<h2>Loan Data</h2>
+			<div class="form-group">
+				<label for="selectLoanType">Type Of Loan:</label>
+				<div class="controls">
+					<select id="selectLoanType" required class="form-control" name="loanType" cam-variable-name="loanType" cam-variable-type="String" ng-change="calculateLoan()">
+						<option value="mortagage" checked>Mortagage Loan (5%)</option>
+						<option value="cashAdvance">Cash Advance (10%)</option>
+					</select>
+				</div>
+				<p ng-if="formVariables.loanType.$invalid" style="color:red">
+					Please select a valid value
+				</p>
+			</div>
+
+			<div class="form-group">
+				<label for="inputLoanAmount">Loan Amount:</label>
+				<div class="controls">
+					<input id="inputLoanAmount" required class="form-control" name="loanAmount" min=1000 type="number" cam-variable-name="loanAmount" cam-variable-type="Double" ng-change="calculateLoan()"/>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="inputLoanTenure">Loan Tenure (in Years):</label>
+				<div class="controls">
+					<input id="inputLoanTenure" required class="form-control" name="loanTenure" min=2 max=30 type="number" cam-variable-name="loanTenure" cam-variable-type="Double" ng-change="calculateLoan()"/>
+				</div>
+			</div>
+
+			Projected Monthly Payment
+			<p ng-if="monthlyPayment" class="alert alert-success">
+				{{monthlyPayment}}€ at {{interestRate}}% interest rate.
+			</p>
+			<p ng-if="!monthlyPayment" class="alert alert-danger">
+				Invalid selection.
+			</p>
+
+			<script cam-script type="text/form-script">
+				$scope.calculateLoan = function() {
+					var form = $scope.formVariables;
+					if(!form.loanType.$valid || !form.loanAmount.$valid || !form.loanTenure.$valid){
+						$scope.monthlyPayment = undefined;
+					} else {
+						var loanAmount = form.loanAmount.$modelValue;
+						var loanTenure = form.loanTenure.$modelValue;
+						var loanType = form.loanType.$modelValue;
+						var interestRate = 0;
+						if(loanType=="mortagage") {
+							interestRate = 0.05;
+						} else {
+							interestRate = 0.1;
+						}
+						$scope.interest = 100 * interestRate;
+						$scope.monthlyPayment = Math.round((loanAmount * ((Math.pow((1+interestRate),loanTenure)*interestRate) / (Math.pow((1+interestRate),loanTenure)-1))) * (1/12));
+					}
+				}
+			</script>
+		</div>
+		<div class="col-xs-6">
+			<h2>Contact Data</h2>
+			<div class=form-group>
+				<label for="selectGender">Gender</label>
+				<div class="controls">
+					<select id="selectGender" class="form-control" cam-variable-name="gender" cam-variable-type="String" ng-change="calculateLoan()">
+						<option value="Mr">Mr.</option>
+						<option value="Mrs">Mrs.</option>
+					</select>
+				</div>
+			</div>
+
+			<div class=form-group>
+				<label for="inputFirstName">First Name</label>
+				<div class="controls">
+					<input id="inputFirstName" required class="form-control" type="text" cam-variable-name="firstName" cam-variable-type="String" placeholder="John" ng-minlength="5" ng-maxlength="30"/>
+				</div>
+			</div>
+
+			<div class=form-group>
+				<label for="inputLastName">Last Name</label>
+				<div class="controls">
+					<input id="inputLastName" required class="form-control" type="text" cam-variable-name="lastName" cam-variable-type="String" placeholder="Doe" ng-minlength="5" ng-maxlength="30"/>
+				</div>
+			</div>
+
+			<div class=form-group>
+				<label for="inputEmail">Email</label>
+				<div class="controls">
+					<input id="inputEmail" required class="form-control" type="text" cam-variable-name="email" cam-variable-type="String" placeholder="JOHN.DOE@CAMUNDA.ORG" ng-minlength="5" ng-maxlength="30"/>
+				</div>
+			</div>
+
+			<div class=form-group>
+				<label for="inputAddress">Address</label>
+				<div class="controls">
+					<textarea id="inputAddress" class="form-control" cam-variable-name="address" cam-variable-type="String" rows="4"></textarea>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>

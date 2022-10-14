@@ -1,0 +1,13 @@
+<form role="form" name="form">
+  <script cam-script type="text/form-script">
+    camForm.on("form-loaded", function(){
+      camForm.variableManager.fetchVariable("approved");
+    });
+    camForm.on("variables-restored", function(){
+      $scope.approved = camForm.variableManager.variableValue("approved");
+    });
+  </script>
+
+  <span ng-if="approved"><h2>Loan Approved</h2></span>
+  <span ng-if="!approved"><h2>Loan Rejected</h2></span>
+</form>

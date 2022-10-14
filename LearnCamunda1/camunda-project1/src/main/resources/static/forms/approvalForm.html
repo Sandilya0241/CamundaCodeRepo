@@ -1,0 +1,61 @@
+<form role="form" name="form">
+    <script cam-script type="text/form-script">
+		camForm.on("form-loaded", function() {
+			camForm.variableManager.fetchVariable("loanType");
+			camForm.variableManager.fetchVariable("loanAmount");
+			camForm.variableManager.fetchVariable("loanTenure");
+			camForm.variableManager.fetchVariable("gender");
+			camForm.variableManager.fetchVariable("firstName");
+			camForm.variableManager.fetchVariable("lastName");
+			camForm.variableManager.fetchVariable("email");
+			camForm.variableManager.fetchVariable("address");
+		});
+
+		camForm.on("variables-restored", function() {
+			$scope.loanType = camForm.variableManager.variableValue("loanType");
+			$scope.loanAmount = camForm.variableManager.variableValue("loanAmount");
+			$scope.loanTenure = camForm.variableManager.variableValue("loanTenure");
+			$scope.gender = camForm.variableManager.variableValue("gender");
+			$scope.firstName = camForm.variableManager.variableValue("firstName");
+			$scope.lastName = camForm.variableManager.variableValue("lastName");
+			$scope.email = camForm.variableManager.variableValue("email");
+			$scope.address = camForm.variableManager.variableValue("address");
+		});
+
+	</script>
+
+    <h2>Request Summary</h2>
+    <table>
+        <tr>
+            <td>Type Of Loan:</td>
+            <td>{{loanType}}</td>
+        </tr>
+
+        <tr>
+            <td>Amount:</td>
+            <td>{{loanAmount}}</td>
+        </tr>
+
+        <tr>
+            <td>Loan Tenure:</td>
+            <td>{{loanTenure}}</td>
+        </tr>
+    </table>
+
+    <h2>Contact Data:</h2>
+    <address>
+        <strong>
+            <span ng-if gender=="Mr">Mr.</span>
+            <span ng-if gender=="MrS">MrS.</span>
+            {{firstName}} {{lastName}}
+        </strong><br>
+        {{address}}<br>
+        <a href="mailto:{{email}}">{{email}}</a>
+    </address>
+
+    <h2>Approval</h2>
+    Approved?
+    <div class="form-group">
+        <input type="checkbox" cam-variable-name="approved" cam-variable-type="Boolean"/>
+    </div>
+</form>
